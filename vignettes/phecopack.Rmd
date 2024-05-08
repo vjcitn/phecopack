@@ -1,0 +1,49 @@
+---
+title: "phecopack: exploring PheCode for ICD10"
+author: "Vincent J. Carey, stvjc at channing.harvard.edu"
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+vignette: >
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteIndexEntry{phecopack: exploring PheCode for ICD10}
+  %\VignetteEncoding{UTF-8}
+output:
+  rmarkdown::html_document:
+    highlight: pygments
+    number_sections: yes
+    theme: united
+    toc: yes
+---
+
+# Introduction
+
+From [a Journal of Medical Internet Research article
+on PheCode mapping](https://medinform.jmir.org/2019/4/e14325/):
+
+> The initial version of phecodes consisted of 733 custom groups of ICD Ninth Revision, Clinical Modification (ICD-9-CM) diagnosis codes. The most recent iteration of phecodes consists of 1866 hierarchical phenotype codes that map to 15,558 ICD-9-CM codes [13,14]. However, many health systems and international groups use the International Classification of Diseases, 10th Revision (ICD-10) or the International Classification of Diseases, 10th Revision, Clinical Modification (ICD-10-CM) codes [15], therefore necessitating a new phecode map.
+
+The `phe.icd10` data frame in this package
+was retrieved from the [PheWAS catalog site](https://phewascatalog.org/phecodes_icd10) on May 6 2024.
+The version is listed as v1.2 beta.  
+
+The publication noted above
+is accessible in [PMC](https://pubmed.ncbi.nlm.nih.gov/31553307/).
+
+# Basic resources
+
+## The basic table
+
+This table can be searched interactively.
+
+```{r lk1}
+library(phecopack)
+data(phe.icd10)
+DT::datatable(phe.icd10[,c("ICD10", "ICD10.String",
+  "Phenotype", "PheCode")])
+```
+
+## The search function
+
+```{r lk2}
+chk = get_icd10(c("asthma*", "cardiac", "malignant"))
+lapply(chk, function(x) head(x[, c("ICD10.String", "Phenotype")]))
+```
